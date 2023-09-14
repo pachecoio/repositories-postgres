@@ -1,10 +1,9 @@
-package postgres
+package main
 
 import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/pachecoio/repositories-postgres/adapters/postgres"
 	"github.com/pachecoio/repositories-postgres/base"
 	"github.com/stretchr/testify/assert"
 )
@@ -13,13 +12,13 @@ func TestPostgresRepository(t *testing.T) {
 
 	sqlxDB, err := sqlx.Connect("sqlite3", ":memory:")
 	assert.Nil(t, err)
-	db, err := postgres.NewPostgresDB(sqlxDB)
+	db, err := NewPostgresDB(sqlxDB)
 	assert.Nil(t, err)
 	defer db.Disconnect()
 
 	db.DB.MustExec(sampleSchema)
 
-	repo := postgres.NewRepository[Sample](db, "sample")
+	repo := NewRepository[Sample](db, "sample")
 
 	t.Run("Should create a sample record", func(t *testing.T) {
 

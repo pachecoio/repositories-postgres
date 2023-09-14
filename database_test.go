@@ -1,11 +1,10 @@
-package postgres
+package main
 
 import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/pachecoio/repositories-postgres/adapters/postgres"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,7 +12,7 @@ func TestPostgresDB_unit(t *testing.T) {
 
 	sqlxConn, err := sqlx.Connect("sqlite3", ":memory:")
 
-	db, err := postgres.NewPostgresDB(sqlxConn)
+	db, err := NewPostgresDB(sqlxConn)
 	defer db.Disconnect()
 
 	assert.Nil(t, err)
