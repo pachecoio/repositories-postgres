@@ -18,13 +18,13 @@ func NewRepository[T base.Model](db *PostgresDB, table string) *Repository[T] {
 
 func (r *Repository[T]) Get(id any) (T, error) {
 	var entity T
-	err := r.db.DB.Get(&entity, "SELECT * FROM sample WHERE id = $1", id)
+	err := r.db.DB.Get(&entity, "SELECT * FROM "+r.table+" WHERE id = $1", id)
 	return entity, err
 }
 
 func (r *Repository[T]) Create(model *T) (any, error) {
 	tx := r.db.DB.MustBegin()
-	res, err := tx.NamedExec("INSERT INTO sample (name) VALUES (:name)", model)
+	res, err := tx.NamedExec("INSERT INTO "+r.table+" (name) VALUES (:name)", model)
 	if err != nil {
 		return nil, err
 	}
@@ -36,6 +36,7 @@ func (r *Repository[T]) Create(model *T) (any, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return id, nil
 }
 
